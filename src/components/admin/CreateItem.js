@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom'
 import config from '../../config.json'
 import fire from '../../firebaseConfig'
 
-const Input = ({ placeholder, name, state, fn }) => {
+const Input = ({ placeholder, name, state, fn, idx }) => {
   const inputStyle = 'border rounded my-2 px-2 py-1 w-full'
 
   return (
-    <div className="relative">
+    <div className="relative" key={idx}>
       <input
         className={inputStyle}
         onChange={(e) => fn({ ...state, [name]: e.target.value })}
@@ -19,13 +19,6 @@ const Input = ({ placeholder, name, state, fn }) => {
     </div>
   )
 }
-
-const inputField = [
-  { placeholder: 'item name', name: 'itemName' },
-  { placeholder: 'item image (url)', name: 'itemImage' },
-  { placeholder: 'item price', name: 'itemPrice' },
-  { placeholder: 'item quantity', name: 'itemQuantity' }
-]
 
 const CreateItem = () => {
   const [itemInfo, setItemInfo] = useState({})
@@ -38,6 +31,13 @@ const CreateItem = () => {
       }
     })
   }, [])
+
+  const inputField = [
+    { placeholder: 'item name', name: 'itemName' },
+    { placeholder: 'item image (url)', name: 'itemImage' },
+    { placeholder: 'item price', name: 'itemPrice' },
+    { placeholder: 'item quantity', name: 'itemQuantity' }
+  ]
 
   const addItem = async () => {
     const { itemName, itemImage, itemPrice, itemQuantity } = itemInfo
@@ -85,6 +85,7 @@ const CreateItem = () => {
             name={name}
             state={itemInfo}
             fn={setItemInfo}
+            idx={index.toString()}
           />
         ))}
       </div>

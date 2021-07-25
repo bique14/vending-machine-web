@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react'
 import config from '../../config.json'
 import fire from '../../firebaseConfig'
 
-const Input = ({ placeholder, name, state, fn }) => {
+const Input = ({ placeholder, name, state, fn, idx }) => {
   const inputStyle = 'border rounded my-2 px-2 py-1 w-full'
 
   return (
-    <div className="relative">
+    <div className="relative" key={idx}>
       <input
         className={inputStyle}
         onChange={(e) => fn({ ...state, [name]: e.target.value })}
@@ -80,6 +80,7 @@ const CreateLocation = () => {
             name={name}
             state={locationInfo}
             fn={setLocationInfo}
+            idx={index.toString()}
           />
         ))}
       </div>

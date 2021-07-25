@@ -119,11 +119,17 @@ const VendingMachine = () => {
               {vendingMachine.name}
             </h1>
           </header>
-          <div className="pb-20 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-            {vendingMachine.items.map((i, index) => (
-              <Item item_={i} onBuy={buyItem} key={index} />
-            ))}
-          </div>
+          {vendingMachine.items.length === 0 ? (
+            <div className="text-center">
+              Sorry, no item. You are too late 😰
+            </div>
+          ) : (
+            <div className="pb-20 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+              {vendingMachine.items.map((i, index) => (
+                <Item item_={i} onBuy={buyItem} key={index} />
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>
