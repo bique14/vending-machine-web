@@ -27,7 +27,7 @@ const Location = (name, slug) => {
       key={slug}
       className="item-card border border-gray-300 rounded flex justify-center cursor-pointer shadow-lg py-6 hover:bg-gray-200"
     >
-      <a className="font-bold" href={`${slug}`}>
+      <a className="font-bold" href={`location/${slug}`}>
         {name}
       </a>
     </div>
