@@ -1,3 +1,4 @@
 {
-  "HOST_SERVICE": "https://vending-machine-service.herokuapp.com"
+  "HOST_SERVICE": "https://vending-machine-service.herokuapp.com",
+  "HOST_SERVICE_DEV": "http://localhost:20001"
 }
