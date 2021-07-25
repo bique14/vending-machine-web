@@ -81,6 +81,12 @@ const Admin = () => {
   const [locations, setLocations] = useState([])
 
   useEffect(() => {
+    fire.auth().onAuthStateChanged((user) => {
+      if (!!!user) {
+        window.location.assign('/login')
+      }
+    })
+
     async function fetchLocations() {
       const response = await fetch(`${config.HOST_SERVICE_DEV}`)
       const ls = await response.json()
@@ -172,9 +178,12 @@ const Admin = () => {
       </header>
       <div className="flex flex-col">
         <div className="flex justify-end mb-4">
-          <button className="bg-green-500 rounded font-bold text-white px-3 py-1 hover:bg-green-600">
+          <a
+            className="bg-green-500 rounded font-bold text-white px-3 py-1 hover:bg-green-600"
+            href="/admin/create-location"
+          >
             + new location
-          </button>
+          </a>
         </div>
         {locations.map((l, index) =>
           Locations(l, index, removeItem, restockItem, forceOutOfStock)

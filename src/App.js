@@ -3,6 +3,7 @@ import Locations from './components/client/Locations'
 import VendingMachine from './components/client/VendingMachine'
 import Login from './components/admin/Login'
 import Admin from './components/admin/Admin'
+import CreateLocation from './components/admin/CreateLocation'
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <Route exact path="/" component={Locations} />
       <Route exact path="/login" component={Login} />
       <Route path="/location/:location" component={VendingMachine} />
-      <Route path="/admin" component={Admin} />
+      <Route exact path="/admin" component={Admin} />
+      <Route exact path="/admin/create-location" component={CreateLocation} />
 
       {/* <Route
         path="/shop"
