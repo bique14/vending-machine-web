@@ -1,13 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './styles/index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { BrowserRouter } from 'react-router-dom'
+import 'regenerator-runtime/runtime.js'
+import './styles/index.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </BrowserRouter>,
   document.getElementById('root')
 )
 

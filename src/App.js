@@ -1,20 +1,18 @@
+import { Route } from 'react-router-dom'
+import Locations from './components/client/Locations'
+import VendingMachine from './components/client/VendingMachine'
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p className="bg-red-300">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Route exact path="/" component={Locations} />
+      <Route path="/:location" component={VendingMachine} />
+
+      {/* <Route
+        path="/shop"
+        render={(props) => <Shop cart={cart} setToCart={this.setToCart} />}
+      /> */}
+    </>
   )
 }
 
