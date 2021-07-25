@@ -7,9 +7,9 @@ const Skeleton = () => {
   const skeltonNumber = [1, 2, 3, 4, 5, 6]
   return (
     <>
-      <header className="py-10 flex justify-center">
-        <h1 className="skelton-item text-3xl font-bold md:text-4xl w-1/2 h-10 bg-gray-200"></h1>
-      </header>
+      <div className="py-10 flex justify-center">
+        <span className="skelton-item text-3xl font-bold md:text-4xl w-1/2 h-10 bg-gray-200"></span>
+      </div>
       <div className="pb-20 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
         {skeltonNumber.map((i) => SkeletonItem(i))}
       </div>
@@ -48,10 +48,7 @@ const Item = ({ item_, onBuy, index }) => {
       <img alt={`item-${slug}`} src={image} className="rounded" />
       <div className="border-t border-gray-300 p-2">
         <div className="flex flex-col cursor-default">
-          <span
-            className="font-bold overflow-hidden overflow-ellipsis whitespace-nowrap"
-            href={`${slug}`}
-          >
+          <span className="font-bold overflow-hidden overflow-ellipsis whitespace-nowrap">
             {name}
           </span>
           <div className="flex justify-between mt-1">
@@ -104,7 +101,7 @@ const VendingMachine = () => {
       })
     })
 
-    const buyResponse = await response.json()
+    await response.json()
     window.location.reload(false)
   }
 

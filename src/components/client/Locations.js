@@ -49,6 +49,12 @@ const Locations = () => {
 
   return (
     <div className="h-full w-9/12 mx-auto">
+      <a
+        className="absolute right-0 px-3 py-1 cursor-pointer font-thin"
+        href="/login"
+      >
+        Admin login
+      </a>
       <header className="text-center py-10">
         <h1 className="text-3xl font-bold md:text-4xl cursor-default">
           Locations
