@@ -8,9 +8,12 @@ const Locations = (l, index, onRemoveItem, onRestock, onForceOutOfStock) => {
     <div key={index} className="pb-10 mb-10 border-b border-gray-300">
       <div className="flex justify-between mb-4">
         <span className="font-bold">Location: {l.name}</span>
-        <button className="bg-blue-500 rounded font-bold text-white px-2 py-1 text-sm hover:bg-blue-600">
+        <a
+          className="bg-blue-500 rounded font-bold text-white px-2 py-1 text-sm hover:bg-blue-600"
+          href={`/admin/create-item/${l.slug}`}
+        >
           + new item
-        </button>
+        </a>
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
         {l.items.map((i, index) =>
