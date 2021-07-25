@@ -56,7 +56,7 @@ const CreateLocation = () => {
     }
 
     const response = await fetch(
-      `${config.HOST_SERVICE_DEV}/admin/create-location`,
+      `${config.HOST_SERVICE}/admin/create-location`,
       {
         method: 'POST',
         headers: {

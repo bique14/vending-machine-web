@@ -53,7 +53,7 @@ const CreateItem = () => {
       }
     }
 
-    const response = await fetch(`${config.HOST_SERVICE_DEV}/admin/add-item`, {
+    const response = await fetch(`${config.HOST_SERVICE}/admin/add-item`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

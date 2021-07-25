@@ -81,7 +81,7 @@ const VendingMachine = () => {
 
   useEffect(() => {
     async function fetchVendingMachine() {
-      const response = await fetch(`${config.HOST_SERVICE_DEV}/${location}`)
+      const response = await fetch(`${config.HOST_SERVICE}/${location}`)
       const its = await response.json()
       setVendingMachine(its[0])
     }
@@ -90,7 +90,7 @@ const VendingMachine = () => {
   }, [location])
 
   const buyItem = async (itemSlug) => {
-    const response = await fetch(`${config.HOST_SERVICE_DEV}/buy`, {
+    const response = await fetch(`${config.HOST_SERVICE}/buy`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

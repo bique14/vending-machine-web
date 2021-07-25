@@ -91,7 +91,7 @@ const Admin = () => {
     })
 
     async function fetchLocations() {
-      const response = await fetch(`${config.HOST_SERVICE_DEV}`)
+      const response = await fetch(`${config.HOST_SERVICE}`)
       const ls = await response.json()
       setLocations(ls)
     }
@@ -113,26 +113,23 @@ const Admin = () => {
   }
 
   const removeItem = async (locationSlug, itemSlug) => {
-    const response = await fetch(
-      `${config.HOST_SERVICE_DEV}/admin/remove-item`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          location: locationSlug,
-          item: itemSlug
-        })
-      }
-    )
+    const response = await fetch(`${config.HOST_SERVICE}/admin/remove-item`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        location: locationSlug,
+        item: itemSlug
+      })
+    })
 
     await response.json()
     window.location.reload(false)
   }
 
   const restockItem = async (locationSlug, itemSlug) => {
-    const response = await fetch(`${config.HOST_SERVICE_DEV}/admin/restock`, {
+    const response = await fetch(`${config.HOST_SERVICE}/admin/restock`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -149,7 +146,7 @@ const Admin = () => {
 
   const forceOutOfStock = async (locationSlug, itemSlug) => {
     const response = await fetch(
-      `${config.HOST_SERVICE_DEV}/admin/force-out-of-stock`,
+      `${config.HOST_SERVICE}/admin/force-out-of-stock`,
       {
         method: 'PUT',
         headers: {
