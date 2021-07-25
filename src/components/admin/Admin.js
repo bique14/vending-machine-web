@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import config from '../../config.json'
 import fire from '../../firebaseConfig'
 
-const Locations = (l, index) => {
+const Locations = (l, index, onRemoveItem, onRestock, onForceOutOfStock) => {
   return (
     <div key={index} className="pb-10 mb-10 border-b border-gray-300">
       <div className="flex justify-between mb-4">
@@ -13,13 +13,22 @@ const Locations = (l, index) => {
         </button>
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-        {l.items.map((i, index) => Item(i, index))}
+        {l.items.map((i, index) =>
+          Item(i, l.slug, index, onRemoveItem, onRestock, onForceOutOfStock)
+        )}
       </div>
     </div>
   )
 }
 
-const Item = (item_, index) => {
+const Item = (
+  item_,
+  locationSlug,
+  index,
+  onRemoveItem,
+  onRestock,
+  onForceOutOfStock
+) => {
   const { slug, name, image, price, quantity } = item_
 
   return (
@@ -30,7 +39,10 @@ const Item = (item_, index) => {
     >
       <div className="relative">
         <img alt={`item-${slug}`} src={image} className="rounded" />
-        <button className="rounded-full bg-red-500 px-1.5 text-white right-1 top-1 absolute">
+        <button
+          className="rounded-full bg-red-500 px-1.5 text-white right-1 top-1 absolute"
+          onClick={() => onRemoveItem(locationSlug, slug)}
+        >
           X
         </button>
       </div>
@@ -47,10 +59,16 @@ const Item = (item_, index) => {
           </div>
         </div>
         <div className="flex justify-between gap-x-2 mt-2">
-          <button className="rounded flex-1 bg-green-500 font-bold text-sm px-2 py-1">
+          <button
+            className="rounded flex-1 bg-green-500 font-bold text-sm px-2 py-1"
+            onClick={() => onRestock(locationSlug, slug)}
+          >
             RESTOCK
           </button>
-          <button className="rounded flex-1 bg-yellow-500 font-bold text-sm px-2 py-1">
+          <button
+            className="rounded flex-1 bg-yellow-500 font-bold text-sm px-2 py-1"
+            onClick={() => onForceOutOfStock(locationSlug, slug)}
+          >
             OUT OF STOCK
           </button>
         </div>
@@ -85,6 +103,60 @@ const Admin = () => {
       })
   }
 
+  const removeItem = async (locationSlug, itemSlug) => {
+    const response = await fetch(
+      `${config.HOST_SERVICE_DEV}/admin/remove-item`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          location: locationSlug,
+          item: itemSlug
+        })
+      }
+    )
+
+    await response.json()
+    window.location.reload(false)
+  }
+
+  const restockItem = async (locationSlug, itemSlug) => {
+    const response = await fetch(`${config.HOST_SERVICE_DEV}/admin/restock`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        location: locationSlug,
+        item: itemSlug
+      })
+    })
+
+    await response.json()
+    window.location.reload(false)
+  }
+
+  const forceOutOfStock = async (locationSlug, itemSlug) => {
+    const response = await fetch(
+      `${config.HOST_SERVICE_DEV}/admin/force-out-of-stock`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          location: locationSlug,
+          item: itemSlug
+        })
+      }
+    )
+
+    await response.json()
+    window.location.reload(false)
+  }
+
   return (
     <div className="h-full w-9/12 mx-auto">
       <button
@@ -104,7 +176,9 @@ const Admin = () => {
             + new location
           </button>
         </div>
-        {locations.map((l, index) => Locations(l, index))}
+        {locations.map((l, index) =>
+          Locations(l, index, removeItem, restockItem, forceOutOfStock)
+        )}
       </div>
     </div>
   )
