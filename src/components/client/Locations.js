@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react'
+
 import config from '../../config.json'
 
-const Location = (name, key) => {
+const Skelton = () => {
+  return <div>Loading ...</div>
+}
+
+const Location = (name, slug) => {
   return (
     <div
-      key={key}
+      key={slug}
       className="border border-black rounded flex justify-center cursor-pointer hover:bg-gray-200"
     >
-      <span className="font-bold">{name}</span>
+      <a className="font-bold" href={`${slug}`}>
+        {name}
+      </a>
     </div>
   )
 }
@@ -29,9 +36,13 @@ const Locations = () => {
       <header className="text-center">
         <h1 className="text-4xl font-bold">Locations</h1>
       </header>
-      <div className="grid grid-cols-3 gap-4">
-        {locations.map((l, _) => Location(l.name, l.slug))}
-      </div>
+      {locations.length === 0 ? (
+        <Skelton />
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {locations.map((l, _) => Location(l.name, l.slug))}
+        </div>
+      )}
     </div>
   )
 }
