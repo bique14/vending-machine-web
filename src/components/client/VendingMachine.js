@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import '../../styles/vending-machine.css'
 import config from '../../config.json'
 
-const Skelton = () => {
+const Skeleton = () => {
+  const skeltonNumber = [1, 2, 3, 4, 5, 6]
   return (
     <>
       <header className="py-10 flex justify-center">
         <h1 className="skelton-item text-3xl font-bold md:text-4xl w-1/2 h-10 bg-gray-200"></h1>
       </header>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-        {[1, 2, 3, 4, 5, 6].map((i) => SkeletonItem(i))}
+      <div className="pb-20 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+        {skeltonNumber.map((i) => SkeletonItem(i))}
       </div>
     </>
   )
@@ -36,10 +36,13 @@ const SkeletonItem = (index) => {
   )
 }
 
-const Item = ({ slug, name, image, price, quantity }) => {
+const Item = ({ item_, onBuy, index }) => {
+  const { slug, name, image, price, quantity } = item_
+
   return (
     <div
-      key={slug}
+      key={index}
+      name={slug}
       className="item-card border border-gray-300 rounded shadow-lg flex flex-col  hover:bg-gray-100"
     >
       <img alt={`item-${slug}`} src={image} className="rounded" />
@@ -58,9 +61,18 @@ const Item = ({ slug, name, image, price, quantity }) => {
             <span className="text-xs text-gray-400 self-center">{`(${quantity.remaining}/${quantity.total})`}</span>
           </div>
         </div>
-        <button className="bg-green-500 w-full rounded font-bold text-white py-1 my-2 hover:bg-green-600">
-          buy
-        </button>
+        {quantity.remaining === 0 ? (
+          <button className="bg-gray-200 w-full rounded font-bold text-white py-1 my-2 cursor-default">
+            buy
+          </button>
+        ) : (
+          <button
+            className="bg-green-500 w-full rounded font-bold text-white py-1 my-2 hover:bg-green-600"
+            onClick={() => onBuy(slug)}
+          >
+            buy
+          </button>
+        )}
       </div>
     </div>
   )
@@ -72,7 +84,7 @@ const VendingMachine = () => {
 
   useEffect(() => {
     async function fetchVendingMachine() {
-      const response = await fetch(`${config.HOST_SERVICE}/${location}`)
+      const response = await fetch(`${config.HOST_SERVICE_DEV}/${location}`)
       const its = await response.json()
       setVendingMachine(its[0])
     }
@@ -80,13 +92,29 @@ const VendingMachine = () => {
     fetchVendingMachine()
   }, [location])
 
+  const buyItem = async (itemSlug) => {
+    const response = await fetch(`${config.HOST_SERVICE_DEV}/buy`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        location,
+        item: itemSlug
+      })
+    })
+
+    const buyResponse = await response.json()
+    window.location.reload(false)
+  }
+
   return (
     <div className="h-full w-9/12 mx-auto">
       <a className="absolute left-0 px-3 py-1 cursor-pointer" href={'/'}>
         {'< back'}
       </a>
       {Object.keys(vendingMachine).length === 0 ? (
-        <Skelton />
+        <Skeleton />
       ) : (
         <>
           <header className="text-center py-10">
@@ -94,8 +122,10 @@ const VendingMachine = () => {
               {vendingMachine.name}
             </h1>
           </header>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-            {vendingMachine.items.map((i, _) => Item(i))}
+          <div className="pb-20 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+            {vendingMachine.items.map((i, index) => (
+              <Item item_={i} onBuy={buyItem} key={index} />
+            ))}
           </div>
         </>
       )}
